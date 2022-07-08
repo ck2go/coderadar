@@ -6,14 +6,16 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "coderadar"
-version = "0.0.2"
+version = "0.0.3"
 description = "Summarizing the code metrics of your project from pytest-cov, pylint and flake8."
 readme = "README.md"
 authors = [{ name = "Carsten König", email = "coderadar@carsten-koenig.de" }]
-license = { file = "LICENSE" }
+license = { text = MIT License" }
 classifiers = [
     "License :: OSI Approved :: MIT License",
-    "Programming Language :: Python"
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 2.7"
+    "Programming Language :: Python :: 3.7"
 ]
 keywords = ["lint", "metrics", "code quality"]
 dependencies = ["pytest",

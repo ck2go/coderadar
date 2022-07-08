@@ -1,5 +1,9 @@
 import json
 
+class Gitlab():
+    def __init__(self):
+        archive = 'https://gitlab.mpcdf.mpg.de/effsoft/testing_gitlab/-/jobs/artifacts/main/raw/coverage.txt?job=tests
+
 
 class PylintReport():
     def __init__(self, txt=None, json=None):
@@ -44,8 +48,24 @@ class PylintReport():
         
         too_complex = [msg for msg in self._report if msg['message-id'] in msg_ids]
         num_too_complex = len(too_complex)
-        max_too_complex = max([int(msg['message'][msg['message'].rfind(' ')+1:]) for msg in too_complex])
+        if num_too_complex > 0:
+            max_too_complex = max([int(msg['message'][msg['message'].rfind(' ')+1:]) for msg in too_complex])
+        else:
+            max_too_many_satements = 0
         return num_too_complex, max_too_complex
+    
+    
+    def getTooManyStatements(self):
+        too_many_satements = 'R0915'
+        msg_ids = [too_many_satements]
+        
+        too_many_satements = [msg for msg in self._report if msg['message-id'] in msg_ids]
+        num_too_many_satements = len(too_many_satements)
+        if num_too_many_satements > 0:
+            max_too_many_satements = max([int(msg['message'][msg['message'].rfind('(')+1:msg['message'].rfind('/')]) for msg in too_many_satements])
+        else:
+            max_too_many_satements = 0
+        return num_too_many_satements, max_too_many_satements
     
     
     def getUnusedImports(self):
@@ -64,6 +84,15 @@ class PylintReport():
         unused_variables = [msg for msg in self._report if msg['message-id'] in msg_ids]
         num_unused_variables = len(unused_variables)
         return num_unused_variables
+    
+    
+    def getUnusedArguments(self):
+        unused_arguments = 'W0613'
+        msg_ids = [unused_arguments]
+        
+        unused_arguments = [msg for msg in self._report if msg['message-id'] in msg_ids]
+        num_unused_arguments = len(unused_arguments)
+        return num_unused_arguments
 
     
     def getUnreachableCode(self):
@@ -73,8 +102,16 @@ class PylintReport():
         unreachable_code = [msg for msg in self._report if msg['message-id'] in msg_ids]
         num_unreachable_code = len(unreachable_code)
         return num_unreachable_code
+
     
-    
+    def getDuplicateCode(self):
+        duplicate_code = 'R0801'
+        duplicate_code2 = 'RP0801'
+        msg_ids = [duplicate_code, duplicate_code2]
+        
+        duplicate_code = [msg for msg in self._report if msg['message-id'] in msg_ids]
+        num_duplicate_code = len(duplicate_code)
+        return num_duplicate_code
         
 
 
@@ -117,11 +154,18 @@ def analyzeCoverage():
     
     pylint = PylintReport()
     print('Pylint Score: %s/10' % pylint.getScore())
-    print('  Missing docstrings: %i' % pylint.getMissingDocstrings())
-    print('  Too complex:        %s (max=%i)' % pylint.getTooComplex())
-    print('  Unused imports:     %i' % pylint.getUnusedImports())
-    print('  Unused variables:   %i' % pylint.getUnusedVariables())
-    print('  Unreachable code:   %i' % pylint.getUnreachableCode())
+    print('  Missing docstrings:           %i' % pylint.getMissingDocstrings())
+    print(' ')
+    print('  Needs Refactoring:')
+    print('    Too complex:                  %s (max=%i)' % pylint.getTooComplex())
+    print('    Function too long (LoC/func): %s (max=%i)' % pylint.getTooManyStatements())
+    print('    Duplicate code:               %s' % pylint.getDuplicateCode())
+    print(' ')
+    print('  Obsolete code:')
+    print('    Unused imports:             %i' % pylint.getUnusedImports())
+    print('    Unused variables:           %i' % pylint.getUnusedVariables())
+    print('    Unused arguments:           %i' % pylint.getUnusedArguments())
+    print('    Unreachable code:           %i' % pylint.getUnreachableCode())
     print('-'*50)
     
     
