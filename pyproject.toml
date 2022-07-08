@@ -29,4 +29,4 @@ requires-python = ">=2.7"
 Homepage = "https://github.com/ck2go/coderadar"
 
 [project.scripts]
-coderadar = "coderadar.coderadar:main"
+coderadar = "coderadar.__main__:main"
