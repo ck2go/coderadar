@@ -3,6 +3,7 @@
 Summarizing the code metrics of your project from pytest-cov, pylint and flake8.
 
 **Status:**  early alpha
+
 **Authors:** Carsten König
 
 ## Installation
@@ -12,11 +13,12 @@ pip install coderadar
 ```
 
 ## How to use
-After you created the required reports with pytest, pylint and flake8, run
+You can analyze your sourcecode with
 
 ```bash
-coderadar
+coderadar <path-to-source>
 ```
+This will run pytest, pylint and flake8 to get the metrics that will be analyzed.
 
 
 ## License
