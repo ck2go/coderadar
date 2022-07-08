@@ -1,10 +1,10 @@
 from setuptools import setup, find_packages
 
-setup(name='codemetrics',
+setup(name='coderadar',
       version='0.0.1',
       packages=find_packages(),
       entry_points = {
-          'console_scripts': ['codemetrics=codemetrics.code_metrics:main'],
+          'console_scripts': ['coderadar=coderadar.coderadar:main'],
           }
 
      )
