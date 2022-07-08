@@ -8,14 +8,14 @@ Summarizing the code metrics of your project from pytest-cov, pylint and flake8.
 ## Installation
 
 ```bash
-pip install code-metrics
+pip install coderadar
 ```
 
 ## How to use
 After you created the required reports with pytest, pylint and flake8, run
 
 ```bash
-code-metrics
+coderadar
 ```
 
 
