@@ -1,4 +1,9 @@
+import subprocess
+import tempfile
 import json
+
+import pytest
+
 
 class Gitlab():
     def __init__(self):
@@ -169,9 +174,55 @@ def analyzeCoverage():
     print('-'*50)
     
     
+def runPytest(package_name):
+    print('Running PyTest...')
+    
+    with tempfile.TemporaryFile() as tempf:
+        proc = subprocess.Popen(['pytest', 
+                                 '-p', 
+                                 'no:warnings',
+                                 '--cov=%s' % package_name,
+                                 '--cov-report=term',
+                                 '--cov-report=xml',
+                                 '--cov-branch',
+                                 '--cov-config=%s/tests/.coveragerc' % package_name
+                                 ],
+                                 stdout=tempf)
+        proc.wait()
+        tempf.seek(0)
+        output = str(tempf.read().decode())
+        
+    print(output)
+    with open('coverage.txt', 'w') as f:
+        f.writelines(output)
+    
+    
+def runPylint(package_name):
+    print('Running PyLint...')
+    # pylint -ry --load-plugins=pylint.extensions.mccabe --output-format=json:pylint.json,text:pylint.txt --ignore tests ./testing_gitlab/
+    with tempfile.TemporaryFile() as tempf:
+        proc = subprocess.Popen(['pylint', 
+                                 '-ry',
+                                 '--load-plugins=pylint.extensions.mccabe',
+                                 '--output-format=json:pylint.json,text:pylint.txt',
+                                 '--ignore=tests',
+                                 './%s/' % package_name
+                                 ],
+                                 stdout=tempf)
+        proc.wait()
+        tempf.seek(0)
+        output = str(tempf.read().decode())
+    print(output)
+        
 
+def runFlake8(package_name):
+    print('Running Flake8...')
 
 def main():
+    package_name = 'testing_gitlab'
+    runPytest(package_name)
+    runPylint(package_name)
+    # runFlake8(package_name)
     analyzeCoverage()
     
 if __name__ == '__main__':
