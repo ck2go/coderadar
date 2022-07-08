@@ -2,7 +2,7 @@ import json
 
 class Gitlab():
     def __init__(self):
-        archive = 'https://gitlab.mpcdf.mpg.de/effsoft/testing_gitlab/-/jobs/artifacts/main/raw/coverage.txt?job=tests
+        archive = ''
 
 
 class PylintReport():
