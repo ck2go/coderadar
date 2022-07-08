@@ -1,4 +1,4 @@
-# Code Metrics
+# Code Radar
 
 Summarizing the code metrics of your project from pytest-cov, pylint and flake8.
 
