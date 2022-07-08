@@ -1,3 +1,7 @@
+'''Module to run Code Radar.'''
+
+import sys
+import os
 import subprocess
 import tempfile
 import json
@@ -219,7 +223,7 @@ def runFlake8(package_name):
     print('Running Flake8...')
 
 def main():
-    package_name = 'testing_gitlab'
+    package_name = os.path.relpath(sys.argv[1])
     runPytest(package_name)
     runPylint(package_name)
     # runFlake8(package_name)
