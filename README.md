@@ -2,7 +2,7 @@
 
 Identifying the highest threats to your code quality by analyzing code metrics of your project using pytest and pylint.
 
-**Status:**  early alpha\
+**Status:**  Beta (runs, but certainly has bugs)\
 **Authors:** Carsten König
 
 ## Purpose
