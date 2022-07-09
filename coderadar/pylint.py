@@ -14,6 +14,7 @@ def _runPylintPy2(package_name):
                                  '--load-plugins=pylint.extensions.mccabe',
                                  '--output-format=json',
                                  '--ignore=tests',
+                                 '--persistent=n',
                                  './%s/' % package_name
                                  ],
                                  stdout=tempf)
@@ -29,6 +30,7 @@ def _runPylintPy2(package_name):
                                  '--load-plugins=pylint.extensions.mccabe',
                                  '--output-format=text',
                                  '--ignore=tests',
+                                 '--persistent=n',
                                  './%s/' % package_name
                                  ],
                                  stdout=tempf)
