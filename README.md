@@ -1,4 +1,4 @@
-# <span style='font-variant: small-caps;'>CodeRadar</span>
+# CodeRadar
 
 Identifying the highest threats to your code quality by analyzing code metrics of your project using pytest and pylint.
 
