@@ -35,7 +35,7 @@ The following artifacts will be created:
 
 
 ## License
-[MIT](https://choosealicense.com/licenses/mit/)
+[MIT License](https://choosealicense.com/licenses/mit/)
 
 ## Author
 **Carsten König**

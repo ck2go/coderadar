@@ -5,11 +5,11 @@ requires = ["setuptools>=42",
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "coderadar"
-version = "0.3.0"
-description = "Summarizing the code metrics of your project from pytest-cov, pylint and flake8."
+name = "CodeRadar"
+version = "0.3.1"
+description = "Identifying the highest threats to your code quality by analyzing code metrics of your project using pytest and pylint."
 readme = "README.md"
-authors = [{ name = "Carsten König", email = "coderadar@carsten-koenig.de" }]
+authors = [{ name = "Carsten König" }]
 license = { text = "MIT License" }
 classifiers = [
     "License :: OSI Approved :: MIT License",
@@ -26,7 +26,7 @@ dependencies = ["pytest",
 requires-python = ">=2.7"
 
 [project.urls]
-Homepage = "https://github.com/ck2go/coderadar"
+Homepage = "https://gitlab.com/ck2go/coderadar"
 
 [project.scripts]
 coderadar = "coderadar.__main__:main"
