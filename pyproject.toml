@@ -5,23 +5,28 @@ requires = ["setuptools>=42",
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "CodeRadar"
-version = "0.3.1"
+name = "coderadar"
+version = "0.3.2"
 description = "Identifying the highest threats to your code quality by analyzing code metrics of your project using pytest and pylint."
 readme = "README.md"
 authors = [{ name = "Carsten König" }]
 license = { text = "MIT License" }
 classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
+    "Topic :: Software Development",
     "Programming Language :: Python",
     "Programming Language :: Python :: 2.7",
-    "Programming Language :: Python :: 3.7"
+    "Programming Language :: Python :: 3",
+    "Operating System :: Unix",
+    "Operating System :: POSIX",
+    "Operating System :: MacOS"
 ]
-keywords = ["lint", "metrics", "code quality"]
+keywords = ["metrics", "code quality", "CI/CD", "lint"]
 dependencies = ["pytest",
                 "pytest-cov",
-                "pylint",
-                "flake8"
+                "pylint"
 ]
 requires-python = ">=2.7"
 
