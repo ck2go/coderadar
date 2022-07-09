@@ -10,7 +10,7 @@ from .gitlab import Gitlab
   
 def _getReportTemplateTxt():
     template = """
-Code Quality Summary
+Code Quality Report
 --------------------------------------------------
 Pytest:
   Test coverage: <coverage>
@@ -38,7 +38,7 @@ def _getReportTemplateHtml():
     template = """<html><body>
 <div style='margin: 0 auto;'>
 <div style='display: table; margin: 0 auto;'>
-<h1>Code Quality Summary</h1>
+<h1>Code Quality Report</h1>
 
 <hr>
 <h2>Pytest:</h2>
