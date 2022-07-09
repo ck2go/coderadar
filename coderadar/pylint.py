@@ -119,16 +119,21 @@ class PylintReport():
         
         too_complex = [msg for msg in self._report if msg['message-id'] in msg_ids]
         num_too_complex = len(too_complex)
+        
         if num_too_complex > 0:
             max_too_complex = max([int(msg['message'][msg['message'].rfind(' ')+1:]) for msg in too_complex])
+            msg = [msg
+                   for msg in too_complex
+                   if max_too_complex == int(msg['message'][msg['message'].rfind(' ')+1:])][0]
+            too_complex_file = msg['path'][msg['path'].find('/')+1:]
+            too_complex_line = msg['line']
+            too_complex_obj = msg['obj']
         else:
             max_too_complex = 0
-        msg = [msg
-               for msg in too_complex
-               if max_too_complex == int(msg['message'][msg['message'].rfind(' ')+1:])][0]
-        too_complex_file = msg['path'][msg['path'].find('/')+1:]
-        too_complex_line = msg['line']
-        too_complex_obj = msg['obj']
+            too_complex_file = ''
+            too_complex_obj = ''
+            too_complex_line = ''
+            
         return num_too_complex, max_too_complex, too_complex_file, too_complex_obj, too_complex_line
     
     
@@ -138,17 +143,21 @@ class PylintReport():
         
         too_many_satements = [msg for msg in self._report if msg['message-id'] in msg_ids]
         num_too_many_satements = len(too_many_satements)
+        
         if num_too_many_satements > 0:
             max_too_many_satements = max([int(msg['message'][msg['message'].rfind('(')+1:msg['message'].rfind('/')]) for msg in too_many_satements])
+            msg = [msg
+                   for msg in too_many_satements
+                   if max_too_many_satements == int(msg['message'][msg['message'].rfind('(')+1:msg['message'].rfind('/')])][0]
+            too_many_statements_file = msg['path'][msg['path'].find('/')+1:]
+            too_many_statements_obj = msg['obj']
+            too_many_statements_line = msg['line']
         else:
             max_too_many_satements = 0
-        
-        msg = [msg
-               for msg in too_many_satements
-               if max_too_many_satements == int(msg['message'][msg['message'].rfind('(')+1:msg['message'].rfind('/')])][0]
-        too_many_statements_file = msg['path'][msg['path'].find('/')+1:]
-        too_many_statements_obj = msg['obj']
-        too_many_statements_line = msg['line']
+            too_many_statements_file = ''
+            too_many_statements_obj = ''
+            too_many_statements_line = ''
+            
         return num_too_many_satements, max_too_many_satements, too_many_statements_file, too_many_statements_obj, too_many_statements_line
     
     
@@ -161,23 +170,28 @@ class PylintReport():
                          if msg['message-id'] in msg_ids]
         num_unused_import = len(unused_import)
         
-        unused_import_path, unused_import_num = Counter(unused_import).most_common()[0]
-        unused_import_file = unused_import_path[unused_import_path.find('/')+1:]
-        
-        unused_import_messages = [msg['message'] 
-                                  for msg in self._report 
-                                  if msg['message-id'] in msg_ids and 
-                                  msg['path'] == unused_import_path]
-        
-        unused_import_items = []
-        for msg in unused_import_messages:
-            if msg[:13] == 'Unused import':
-                item = msg[14:]
-            elif ' imported from' in msg:
-                item = msg[msg.find(' ')+1:msg.find('imported')-1]
-            else:
-                raise RuntimeError("Can't parse message: '%s'" % msg)
-            unused_import_items.append(item)
+        if num_unused_import > 0:
+            unused_import_path, unused_import_num = Counter(unused_import).most_common()[0]
+            unused_import_file = unused_import_path[unused_import_path.find('/')+1:]
+            
+            unused_import_messages = [msg['message'] 
+                                      for msg in self._report 
+                                      if msg['message-id'] in msg_ids and 
+                                      msg['path'] == unused_import_path]
+            
+            unused_import_items = []
+            for msg in unused_import_messages:
+                if msg[:13] == 'Unused import':
+                    item = msg[14:]
+                elif ' imported from' in msg:
+                    item = msg[msg.find(' ')+1:msg.find('imported')-1]
+                else:
+                    raise RuntimeError("Can't parse message: '%s'" % msg)
+                unused_import_items.append(item)
+        else:
+            unused_import_file = ''
+            unused_import_num = 0
+            unused_import_items = []
         
         return num_unused_import, unused_import_file, unused_import_num, unused_import_items
     
@@ -191,17 +205,22 @@ class PylintReport():
                             if msg['message-id'] in msg_ids]
         num_unused_variables = len(unused_variables)
         
-        unused_variables_path, unused_variables_num = Counter(unused_variables).most_common()[0]
-        unused_variables_file = unused_variables_path[unused_variables_path.find('/')+1:]
-        unused_variables_messages = [(msg['message'], msg['line'])
-                                     for msg in self._report 
-                                     if msg['message-id'] in msg_ids and 
-                                     msg['path'] == unused_variables_path]
-        unused_variables_items = []
-        for msg, line in unused_variables_messages:
-            variable = msg[msg.rfind(" '")+2:-1]
-            unused_variables_items.append("'%s' (l:%s)" % (variable, line))
-        unused_variables_num = len(unused_variables_items)
+        if num_unused_variables > 0:
+            unused_variables_path, unused_variables_num = Counter(unused_variables).most_common()[0]
+            unused_variables_file = unused_variables_path[unused_variables_path.find('/')+1:]
+            unused_variables_messages = [(msg['message'], msg['line'])
+                                         for msg in self._report 
+                                         if msg['message-id'] in msg_ids and 
+                                         msg['path'] == unused_variables_path]
+            unused_variables_items = []
+            for msg, line in unused_variables_messages:
+                variable = msg[msg.rfind(" '")+2:-1]
+                unused_variables_items.append("'%s' (l:%s)" % (variable, line))
+            unused_variables_num = len(unused_variables_items)
+        else:
+            unused_variables_file = ''
+            unused_variables_num = 0
+            unused_variables_items = []
         
         return num_unused_variables, unused_variables_file, unused_variables_num, unused_variables_items
     
@@ -215,18 +234,23 @@ class PylintReport():
                             if msg['message-id'] in msg_ids]
         num_unused_arguments = len(unused_arguments)
         
-        unused_arguments_path, unused_arguments_num = Counter(unused_arguments).most_common()[0]
-        unused_arguments_file = unused_arguments_path[unused_arguments_path.find('/')+1:]
-        unused_arguments_messages = [(msg['message'], msg['line'], msg['obj'])
-                                     for msg in self._report 
-                                     if msg['message-id'] in msg_ids and 
-                                     msg['path'] == unused_arguments_path]
-        unused_arguments_items = []
-        for msg, line, obj in unused_arguments_messages:
-            variable = msg[msg.rfind(" '")+2:-1]
-            unused_arguments_items.append("'%s(%s)' (l:%s)" % (obj, variable, line))
-        unused_arguments_num = len(unused_arguments_items)
-        
+        if num_unused_arguments > 0:
+            unused_arguments_path, unused_arguments_num = Counter(unused_arguments).most_common()[0]
+            unused_arguments_file = unused_arguments_path[unused_arguments_path.find('/')+1:]
+            unused_arguments_messages = [(msg['message'], msg['line'], msg['obj'])
+                                         for msg in self._report 
+                                         if msg['message-id'] in msg_ids and 
+                                         msg['path'] == unused_arguments_path]
+            unused_arguments_items = []
+            for msg, line, obj in unused_arguments_messages:
+                variable = msg[msg.rfind(" '")+2:-1]
+                unused_arguments_items.append("'%s(%s)' (l:%s)" % (obj, variable, line))
+            unused_arguments_num = len(unused_arguments_items)
+        else:
+            unused_arguments_file = ''
+            unused_arguments_num = 0
+            unused_arguments_items = []
+            
         return num_unused_arguments, unused_arguments_file, unused_arguments_num, unused_arguments_items
 
     
@@ -237,17 +261,21 @@ class PylintReport():
         unreachable_code = [msg['path'] for msg in self._report if msg['message-id'] in msg_ids]
         num_unreachable_code = len(unreachable_code)
         
-        unreachable_code_path, unreachable_code_num = Counter(unreachable_code).most_common()[0]
-        unreachable_code_file = unreachable_code_path[unreachable_code_path.find('/')+1:]
-        unreachable_code_messages = [(msg['line'], msg['obj'])
-                                     for msg in self._report 
-                                     if msg['message-id'] in msg_ids and 
-                                     msg['path'] == unreachable_code_path]
-        unreachable_code_items = []
-        for line, obj in unreachable_code_messages:
-            unreachable_code_items.append("'%s' (l:%s)" % (obj, line))
-        unreachable_code_num = len(unreachable_code_items)
-        
+        if num_unreachable_code > 0:
+            unreachable_code_path, unreachable_code_num = Counter(unreachable_code).most_common()[0]
+            unreachable_code_file = unreachable_code_path[unreachable_code_path.find('/')+1:]
+            unreachable_code_messages = [(msg['line'], msg['obj'])
+                                         for msg in self._report 
+                                         if msg['message-id'] in msg_ids and 
+                                         msg['path'] == unreachable_code_path]
+            unreachable_code_items = []
+            for line, obj in unreachable_code_messages:
+                unreachable_code_items.append("'%s' (l:%s)" % (obj, line))
+            unreachable_code_num = len(unreachable_code_items)
+        else:
+            unreachable_code_file = ''
+            unreachable_code_num = 0
+            unreachable_code_items = []
         
         return num_unreachable_code, unreachable_code_file, unreachable_code_num, unreachable_code_items
 
@@ -260,13 +288,19 @@ class PylintReport():
         duplicate_code = [msg for msg in self._report if msg['message-id'] in msg_ids]
         num_duplicate_code = len(duplicate_code)
 
-        duplicate_code_max = max([int(msg['message'][msg['message'].find(' in ')+4:msg['message'].find(' files')])
-                                  for msg in duplicate_code])
-        duplicate_code_txt = [msg['message'].split('\n')
-                                for msg in duplicate_code
-                                if duplicate_code_max == int(msg['message'][msg['message'].find(' in ')+4:msg['message'].find(' files')])][0]
-        duplicate_code_files = duplicate_code_txt[1:1+duplicate_code_max]
-        duplicate_code_files = [file[file.find('.')+1:] for file in duplicate_code_files]
-        duplicate_code_lines = len(duplicate_code_txt[1+duplicate_code_max:])
+        if num_duplicate_code > 0:
+            duplicate_code_max = max([int(msg['message'][msg['message'].find(' in ')+4:msg['message'].find(' files')])
+                                      for msg in duplicate_code])
+            duplicate_code_txt = [msg['message'].split('\n')
+                                    for msg in duplicate_code
+                                    if duplicate_code_max == int(msg['message'][msg['message'].find(' in ')+4:msg['message'].find(' files')])][0]
+            duplicate_code_files = duplicate_code_txt[1:1+duplicate_code_max]
+            duplicate_code_files = [file[file.find('.')+1:] for file in duplicate_code_files]
+            duplicate_code_lines = len(duplicate_code_txt[1+duplicate_code_max:])
+        else:
+            duplicate_code_max = 0
+            duplicate_code_files = []
+            duplicate_code_lines = 0
+            
         return num_duplicate_code, duplicate_code_max, duplicate_code_files, duplicate_code_lines
     
