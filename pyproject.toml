@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "coderadar"
-version = "0.2.0"
+version = "0.3.0"
 description = "Summarizing the code metrics of your project from pytest-cov, pylint and flake8."
 readme = "README.md"
 authors = [{ name = "Carsten König", email = "coderadar@carsten-koenig.de" }]

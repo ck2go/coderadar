@@ -41,6 +41,10 @@ class CoverageReport():
         self._xml = xml 
         
         
+    def getTxtUrl(self):
+        return self._txt
+    
+    
     def getTotalCoverage(self):
         with open(self._txt) as f:
             lines = f.readlines()
