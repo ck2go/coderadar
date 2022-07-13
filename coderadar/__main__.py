@@ -1,12 +1,14 @@
 '''Module to run Code Radar.'''
 
+from __future__ import absolute_import
+
 import sys
 import os
 
 from .pylint import runPylint, PylintReport
 from .pytest import runPytest, CoverageReport
-from .flake8 import runFlake8
-from .gitlab import Gitlab
+# from .flake8 import runFlake8
+# from .gitlab import Gitlab
   
 def _getReportTemplateTxt():
     template = """

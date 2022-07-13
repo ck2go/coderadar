@@ -2,6 +2,7 @@ from __future__ import absolute_import
 
 from ..pytest import CoverageReport
 
+
 def test_tests():
     assert True
 
