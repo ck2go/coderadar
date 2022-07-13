@@ -1,63 +1,43 @@
 '''Module containing PyLint functionality.'''
 
 import sys
-import subprocess
-import tempfile
 import json
 from collections import Counter
 
+from ._functions import executeShell
+
     
 def _runPylintPy2(package_name):
-    # pylint -ry --load-plugins=pylint.extensions.mccabe --output-format=json:pylint.json,text:pylint.txt --ignore tests ./testing_gitlab/
-    with tempfile.TemporaryFile() as tempf:
-        proc = subprocess.Popen(['pylint', 
-                                 '-ry',
-                                 '--load-plugins=pylint.extensions.mccabe',
-                                 '--output-format=json',
-                                 '--ignore=tests',
-                                 '--persistent=n',
-                                 './%s/' % package_name
-                                 ],
-                                 stdout=tempf)
-        proc.wait()
-        tempf.seek(0)
-        output = str(tempf.read().decode())
-        with open('pylint.json', 'w') as f:
-            f.write(output)
+    cmd = ['pylint', 
+           '-ry',
+           '--load-plugins=pylint.extensions.mccabe',
+           '--output-format=text',
+           '--ignore=tests',
+           '--persistent=n',
+           './%s/' % package_name
+           ]
+    executeShell(cmd, print_output=True, save_output_as='pylint.txt')
     
-    with tempfile.TemporaryFile() as tempf:
-        proc = subprocess.Popen(['pylint', 
-                                 '-ry',
-                                 '--load-plugins=pylint.extensions.mccabe',
-                                 '--output-format=text',
-                                 '--ignore=tests',
-                                 '--persistent=n',
-                                 './%s/' % package_name
-                                 ],
-                                 stdout=tempf)
-        proc.wait()
-        tempf.seek(0)
-        output = str(tempf.read().decode())
-        with open('pylint.txt', 'w') as f:
-            f.write(output)
-        print(output)
+    cmd = ['pylint', 
+           '-ry',
+           '--load-plugins=pylint.extensions.mccabe',
+           '--output-format=json',
+           '--ignore=tests',
+           '--persistent=n',
+           './%s/' % package_name
+           ]
+    executeShell(cmd, print_output=True, save_output_as='pylint.json')
     
     
 def _runPylintPy3(package_name):
-    # pylint -ry --load-plugins=pylint.extensions.mccabe --output-format=json:pylint.json,text:pylint.txt --ignore tests ./testing_gitlab/
-    with tempfile.TemporaryFile() as tempf:
-        proc = subprocess.Popen(['pylint', 
-                                 '-ry',
-                                 '--load-plugins=pylint.extensions.mccabe',
-                                 '--output-format=json:pylint.json,text:pylint.txt',
-                                 '--ignore=tests',
-                                 './%s/' % package_name
-                                 ],
-                                 stdout=tempf)
-        proc.wait()
-        tempf.seek(0)
-        output = str(tempf.read().decode())
-    print(output)
+    cmd = ['pylint', 
+           '-ry',
+           '--load-plugins=pylint.extensions.mccabe',
+           '--output-format=json:pylint.json,text:pylint.txt',
+           '--ignore=tests',
+           './%s/' % package_name
+           ]
+    executeShell(cmd)
     
     
 def runPylint(package_name):

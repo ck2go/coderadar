@@ -12,13 +12,14 @@ def runPytest(package_name):
     cmd = ['python',
            '-m',
            'pytest',
+           '-v',
            '--cov=%s' % package_name,
            '--cov-report=term',
            '--cov-report=xml',
            '--cov-branch']
     coveragerc_path = '%s/tests/.coveragerc' % package_name
     if os.path.exists(coveragerc_path):
-           cmd += ['--cov-config=%s' % coveragerc_path]
+        cmd += ['--cov-config=%s' % coveragerc_path]
     cmd += ['%s/tests/' % package_name]
     print(' '.join(cmd))
     with tempfile.TemporaryFile() as tempf:
@@ -57,7 +58,7 @@ class CoverageReport():
         for line in lines:
             if '-- coverage:' in line:
                 in_coverage = True
-            if line[:5] == 'TOTAL':
+            if in_coverage and line[:5] == 'TOTAL':
                 coverage = line.split()[-1]
                 break
         
