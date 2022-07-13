@@ -105,10 +105,10 @@ def _getReportTemplateHtml():
     return template
   
   
-def getReportTemplate(type='txt'):
-    if type.lower() == 'txt':
+def getReportTemplate(report_type='txt'):
+    if report_type.lower() == 'txt':
         template = _getReportTemplateTxt()
-    elif type.lower() == 'html':
+    elif report_type.lower() == 'html':
         template = _getReportTemplateHtml()
     return template
 
@@ -155,13 +155,13 @@ def _fillTemplate(report, package_name, coverage, pylint):
 def summarizeCodeQuality(package_name):
     coverage = CoverageReport()
     pylint = PylintReport()
-    report_txt = getReportTemplate(type='txt')
+    report_txt = getReportTemplate(report_type='txt')
     report_txt = _fillTemplate(report_txt, package_name, coverage, pylint)
     print(report_txt)
     with open('code_quality_report.txt', 'w') as f:
         f.write(report_txt)
     
-    report_html = getReportTemplate(type='html')
+    report_html = getReportTemplate(report_type='html')
     report_html = _fillTemplate(report_html, package_name, coverage, pylint)
     with open('code_quality_report.html', 'w') as f:
         f.write(report_html)
