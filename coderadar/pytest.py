@@ -1,5 +1,6 @@
 '''Module for PyTest functionality.'''
 
+import os
 import subprocess
 import tempfile
 
@@ -7,16 +8,18 @@ import tempfile
 def runPytest(package_name):
     print('Running PyTest...')
     
+    
     cmd = ['python',
            '-m',
            'pytest',
            '--cov=%s' % package_name,
            '--cov-report=term',
            '--cov-report=xml',
-           '--cov-branch',
-           '--cov-config=%s/tests/.coveragerc' % package_name,
-           '%s/tests/' % package_name
-           ]
+           '--cov-branch']
+    coveragerc_path = '%s/tests/.coveragerc' % package_name
+    if os.path.exists(coveragerc_path):
+           cmd += ['--cov-config=%s' % coveragerc_path]
+    cmd += ['%s/tests/' % package_name]
     print(' '.join(cmd))
     with tempfile.TemporaryFile() as tempf:
         proc = subprocess.Popen(cmd,
