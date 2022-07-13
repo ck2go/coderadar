@@ -6,3 +6,4 @@ pylint.txt
 coverage.xml
 coverage.txt
 code_quality_report.*
+*/.coverage
