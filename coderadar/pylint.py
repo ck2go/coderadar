@@ -26,7 +26,7 @@ def _runPylintPy2(package_name):
            '--persistent=n',
            './%s/' % package_name
            ]
-    executeShell(cmd, print_output=True, save_output_as='pylint.json')
+    executeShell(cmd, print_output=False, save_output_as='pylint.json')
     
     
 def _runPylintPy3(package_name):

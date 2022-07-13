@@ -1,13 +1,13 @@
 '''Module for PyTest functionality.'''
 
+from __future__ import absolute_import
+
 import os
-import subprocess
-import tempfile
+from ._functions import executeShell
 
     
 def runPytest(package_name):
     print('Running PyTest...')
-    
     
     cmd = ['python',
            '-m',
@@ -17,21 +17,19 @@ def runPytest(package_name):
            '--cov-report=term',
            '--cov-report=xml',
            '--cov-branch']
-    coveragerc_path = '%s/tests/.coveragerc' % package_name
+    if os.path.exists('./tests'):
+        test_dir = 'tests'
+    elif os.path.exists('%s/tests' % package_name):
+        test_dir = '%s/tests' % package_name
+    
+    coveragerc_path = '%s/.coveragerc' % test_dir
     if os.path.exists(coveragerc_path):
         cmd += ['--cov-config=%s' % coveragerc_path]
-    cmd += ['%s/tests/' % package_name]
+    
+    cmd += [test_dir]
     print(' '.join(cmd))
-    with tempfile.TemporaryFile() as tempf:
-        proc = subprocess.Popen(cmd,
-                                stdout=tempf)
-        proc.wait()
-        tempf.seek(0)
-        output = str(tempf.read().decode())
-        
-    print(output)
-    with open('coverage.txt', 'w') as f:
-        f.writelines(output)
+    
+    executeShell(cmd, save_output_as='coverage.txt')
         
 
 class CoverageReport():
