@@ -1,5 +1,5 @@
 '''Module containing GitLab funtionality.'''
 
-class Gitlab():
+class Gitlab(object):
     def __init__(self, archive):
         self.archive = archive

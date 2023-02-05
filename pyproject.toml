@@ -6,15 +6,15 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "coderadar"
-version = "0.3.4"
+version = "0.4.0"
 description = "Identifying the highest threats to your code quality by analyzing code metrics of your project using pytest and pylint."
 readme = "README.md"
 authors = [{ name = "Carsten König" }]
-license = { text = "MIT License" }
+license = { text = "GNU GPLv3 License" }
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
     "Topic :: Software Development",
     "Programming Language :: Python",
     "Programming Language :: Python :: 2.7",

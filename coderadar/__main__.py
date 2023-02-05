@@ -13,7 +13,7 @@ from .pytest import runPytest
 # from .gitlab import Gitlab
   
 
-class CodeRadar():
+class CodeRadar(object):
     def __init__(self, package_name):
         self._package_name = package_name
 

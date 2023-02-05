@@ -1,7 +1,7 @@
 '''Module containing PyLint functionality.'''
 
 import sys
-import json
+from json import load
 from collections import Counter
 
 from ._functions import executeShell
@@ -48,7 +48,7 @@ def runPylint(package_name):
         _runPylintPy3(package_name)
     
     
-class PylintReport():
+class PylintReport(object):
     def __init__(self, txt=None, json=None):
         if txt is None:
             txt = 'pylint.txt'
@@ -65,7 +65,7 @@ class PylintReport():
     
     
     def _loadJsonReport(self):
-        return json.load(open(self._json))
+        return load(open(self._json))
         
         
     def getScore(self):
@@ -80,11 +80,11 @@ class PylintReport():
     
     def getMissingDocstrings(self):
         if sys.version_info.major == 2:
-            no_docstring   = 'C0111'
+            no_docstring = 'C0111'
             msg_ids = [no_docstring]
         else:
-            no_module_docstring   = 'C0114'
-            no_class_docstring    = 'C0115'
+            no_module_docstring = 'C0114'
+            no_class_docstring = 'C0115'
             no_function_docstring = 'C0116'
             msg_ids = [no_module_docstring, no_class_docstring, no_function_docstring]
         
@@ -275,7 +275,7 @@ class PylintReport():
                                     for msg in duplicate_code
                                     if duplicate_code_max == int(msg['message'][msg['message'].find(' in ')+4:msg['message'].find(' files')])][0]
             duplicate_code_files = duplicate_code_txt[1:1+duplicate_code_max]
-            duplicate_code_files = [file[file.find('.')+1:] for file in duplicate_code_files]
+            duplicate_code_files = [file_name[file_name.find('.')+1:] for file_name in duplicate_code_files]
             duplicate_code_lines = len(duplicate_code_txt[1+duplicate_code_max:])
         else:
             duplicate_code_max = 0

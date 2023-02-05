@@ -32,7 +32,7 @@ def runPytest(package_name):
     executeShell(cmd, save_output_as='coverage.txt')
         
 
-class CoverageReport():
+class CoverageReport(object):
     def __init__(self, txt=None, xml=None):
         if txt is None:
             txt = 'coverage.txt'
