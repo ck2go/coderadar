@@ -165,6 +165,8 @@ class PylintReport(object):
                     item = msg[14:]
                 elif ' imported from' in msg:
                     item = msg[msg.find(' ')+1:msg.find('imported')-1]
+                elif ' imported as ' in msg:
+                    item = msg[msg.find(' ')+1:msg.find('imported')-1] + ' (as %s)' % msg[msg.rfind(' ')+1:]
                 else:
                     raise RuntimeError("Can't parse message: '%s'" % msg)
                 unused_import_items.append(item)

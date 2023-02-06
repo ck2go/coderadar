@@ -59,7 +59,7 @@ Pytest:
  
 --------------------------------------------------
 Pylint Score:  <pylint_score>/10<pylint_score_diff> 
-  Missing docstrings:             <missing_docstrings> 
+  Missing docstrings:             <missing_docstrings><missing_docstrings_diff> 
  
   Needs Refactoring:
     Too complex:                  <too_complex_num><too_complex_num_diff> (max cyclomatic complexity=<too_complex_max><too_complex_max_diff>)
@@ -115,7 +115,7 @@ Pylint Score:  <pylint_score>/10<pylint_score_diff>
 <h2>Pylint <span style='font-weight: normal; font-size: medium;'>(Score: <pylint_score>/10<pylint_score_diff>; <a href='<pylint_report_url>'>Report</a>)</span></h2>
 
 <table>
-<tr><td>Missing docstrings:</td><td><missing_docstrings></td></tr>
+<tr><td>Missing docstrings:</td><td><missing_docstrings><missing_docstrings_diff></td></tr>
 
 <tr><td span=2>&nbsp;</td></tr>
 <tr><td span=2><b>Needs Refactoring:</b></td></tr>
@@ -183,7 +183,7 @@ Pylint Score:  <pylint_score>/10<pylint_score_diff>
         report = self._replacePlacehlder(report, 'pylint_score', pylint, 'getScore', previous_pylint, better=+1)
 
         report = report.replace('<pylint_report_url>', str(pylint.getTxtUrl()))
-        report = report.replace('<missing_docstrings>', str(pylint.getMissingDocstrings()))
+        report = self._replacePlacehlder(report, 'missing_docstrings', pylint, 'getMissingDocstrings', previous_pylint, better=-1)
         report = self._replacePlacehlder(report, 'too_complex_num', pylint, 'getTooComplex', previous_pylint, arg=0, better=-1)
         report = self._replacePlacehlder(report, 'too_complex_max', pylint, 'getTooComplex', previous_pylint, arg=1, better=-1)
         report = report.replace('<too_complex_file>', str(pylint.getTooComplex()[2]))
