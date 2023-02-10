@@ -52,7 +52,7 @@ class CoverageReport(object):
             lines = f.readlines()
 
         if len(lines) == 0:
-            raise RuntimeError(f"File '{self._txt}' is empty!")
+            raise RuntimeError("File '' is empty!" % self._txt)
 
         # find the correct line in the coverage report and extract the total coverage
         in_coverage = False
@@ -63,5 +63,5 @@ class CoverageReport(object):
                 coverage = line.split()[-1]
                 break
         if 'coverage' not in locals():
-            raise RuntimeError(f"File '{self._txt}' does not contain Pytest coverage report!")
+            raise RuntimeError("File '%s' does not contain Pytest coverage report!" % self._txt)
         return coverage

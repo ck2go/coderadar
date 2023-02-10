@@ -70,9 +70,9 @@ class PylintReport(object):
             res = load(open(self._json))
         except json.decoder.JSONDecodeError:
             if os.path.getsize(self._json) == 0:
-                raise RuntimeError(f"File '{self._json}' is empty!")
+                raise RuntimeError("File '%s' is empty!" % self._json)
             else:
-                raise RuntimeError(f"Can't decode JSON in file '{self._json}'!")
+                raise RuntimeError("Can't decode JSON in file '%s'!" % self._json)
         return res
         
         
