@@ -52,7 +52,7 @@ class CoverageReport(object):
             lines = f.readlines()
 
         if len(lines) == 0:
-            raise RuntimeError("File '' is empty!" % self._txt)
+            raise RuntimeError("File '%s' is empty!" % self._txt)
 
         # find the correct line in the coverage report and extract the total coverage
         in_coverage = False

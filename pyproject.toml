@@ -25,6 +25,7 @@ classifiers = [
 ]
 keywords = ["metrics", "code quality", "CI/CD", "lint"]
 dependencies = ["pytest",
+                "pytest-mock",
                 "pytest-cov",
                 "pylint"
 ]
