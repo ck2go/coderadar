@@ -1,5 +1,6 @@
 '''Module containing PyLint functionality.'''
-
+import json.decoder
+import os.path
 import sys
 from json import load
 from collections import Counter
@@ -65,7 +66,14 @@ class PylintReport(object):
     
     
     def _loadJsonReport(self):
-        return load(open(self._json))
+        try:
+            res = load(open(self._json))
+        except json.decoder.JSONDecodeError:
+            if os.path.getsize(self._json) == 0:
+                raise RuntimeError(f"File '{self._json}' is empty!")
+            else:
+                raise RuntimeError(f"Can't decode JSON in file '{self._json}'!")
+        return res
         
         
     def getScore(self):
