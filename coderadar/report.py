@@ -220,18 +220,15 @@ Pylint Score:  <pylint_score>/10<pylint_score_diff>
     def summarizeCodeQuality(self, package_name):
         coverage = CoverageReport()
         previous_coverage_file = 'last_run/coverage'
-        if os.path.exists(previous_coverage_file+'.txt'):
+        if os.path.exists(previous_coverage_file+'.txt') and (os.path.getsize(previous_coverage_file+'.txt') > 0):
             previous_coverage = CoverageReport(txt=previous_coverage_file+'.txt', xml=previous_coverage_file+'.xml')
         else:
             previous_coverage = None
 
         pylint = PylintReport()
         previous_pylint_file = 'last_run/pylint'
-        if os.path.exists(previous_pylint_file+'.txt'):
-            try:
-                previous_pylint = PylintReport(txt=previous_pylint_file+'.txt', json=previous_pylint_file+'.json')
-            except RuntimeError as e:
-                previous_pylint = None
+        if os.path.exists(previous_pylint_file+'.txt') and (os.path.getsize(previous_pylint_file+'.json') > 0):
+            previous_pylint = PylintReport(txt=previous_pylint_file+'.txt', json=previous_pylint_file+'.json')
         else:
             previous_pylint = None
 
