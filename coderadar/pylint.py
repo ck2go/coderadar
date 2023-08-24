@@ -28,6 +28,28 @@ def _runPylintPy2(package_name):
            './%s/' % package_name
            ]
     executeShell(cmd, print_output=False, save_output_as='pylint.json')
+
+    cmd = ['pylint',
+           '-ry',
+           '--py3k',
+           '--load-plugins=pylint.extensions.mccabe',
+           '--output-format=text',
+           '--ignore=tests',
+           '--persistent=n',
+           './%s/' % package_name
+           ]
+    executeShell(cmd, print_output=True, save_output_as='pylint_py3.txt')
+
+    cmd = ['pylint',
+           '-ry',
+           '--py3k'
+           '--load-plugins=pylint.extensions.mccabe',
+           '--output-format=json',
+           '--ignore=tests',
+           '--persistent=n',
+           './%s/' % package_name
+           ]
+    executeShell(cmd, print_output=False, save_output_as='pylint_py3.json')
     
     
 def _runPylintPy3(package_name):

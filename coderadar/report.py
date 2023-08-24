@@ -228,7 +228,10 @@ Pylint Score:  <pylint_score>/10<pylint_score_diff>
         pylint = PylintReport()
         previous_pylint_file = 'last_run/pylint'
         if os.path.exists(previous_pylint_file+'.txt'):
-            previous_pylint = PylintReport(txt=previous_pylint_file+'.txt', json=previous_pylint_file+'.json')
+            try:
+                previous_pylint = PylintReport(txt=previous_pylint_file+'.txt', json=previous_pylint_file+'.json')
+            except RuntimeError as e:
+                previous_pylint = None
         else:
             previous_pylint = None
 
