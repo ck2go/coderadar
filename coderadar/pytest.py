@@ -16,7 +16,8 @@ def runPytest(package_name):
            '--cov=%s' % package_name,
            '--cov-report=term',
            '--cov-report=xml',
-           '--cov-branch']
+           '--cov-branch',
+           '--capture=no']
     if os.path.exists('./tests'):
         test_dir = 'tests'
     elif os.path.exists('%s/tests' % package_name):
