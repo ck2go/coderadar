@@ -221,6 +221,14 @@ class PylintReport(object):
         return num_too_complex, max_too_complex, too_complex_file, too_complex_obj, too_complex_line
     
     def getTooManyStatements(self):
+        """
+        Get the information on too many statements.
+
+        Returns
+        -------
+        set(int, int, str, str, str)
+            Number of too many statements, maximum number of statements, file with too many statements, object with too many statements, line with too many statements.
+        """
         too_many_satements = 'R0915'
         msg_ids = [too_many_satements]
         
@@ -244,6 +252,14 @@ class PylintReport(object):
         return num_too_many_satements, max_too_many_satements, too_many_statements_file, too_many_statements_obj, too_many_statements_line
     
     def getUnusedImports(self):
+        """
+        Get the information on unused imports.
+
+        Returns
+        -------
+        set(int, str, int, list)
+            Number of unused imports, file with unused imports, number of unused imports, list of unused imports.
+        """
         unused_import = 'W0611'
         msg_ids = [unused_import]
         
@@ -280,6 +296,14 @@ class PylintReport(object):
         return num_unused_import, unused_import_file, unused_import_num, unused_import_items
     
     def getUnusedVariables(self):
+        """
+        Get the information on unused variables.
+
+        Returns
+        -------
+        set(int, str, int, list)
+            Number of unused variables, file with unused variables, number of unused variables, list of unused variables.
+        """
         unused_variable = 'W0612'
         msg_ids = [unused_variable]
         
@@ -308,6 +332,14 @@ class PylintReport(object):
         return num_unused_variables, unused_variables_file, unused_variables_num, unused_variables_items
     
     def getUnusedArguments(self):
+        """
+        Get the information on unused arguments.
+
+        Returns
+        -------
+        set(int, str, int, list)
+            Number of unused arguments, file with unused arguments, number of unused arguments, list of unused arguments.
+        """
         unused_arguments = 'W0613'
         msg_ids = [unused_arguments]
         
@@ -336,6 +368,14 @@ class PylintReport(object):
         return num_unused_arguments, unused_arguments_file, unused_arguments_num, unused_arguments_items
 
     def getUnreachableCode(self):
+        """
+        Get the information on unreachable code.
+
+        Returns
+        -------
+        set(int, str, int, list)
+            Number of unreachable code, file with unreachable code, number of unreachable code, list of unreachable code.
+        """
         unreachable_code = 'W0101'
         msg_ids = [unreachable_code]
         
@@ -361,6 +401,14 @@ class PylintReport(object):
         return num_unreachable_code, unreachable_code_file, unreachable_code_num, unreachable_code_items
 
     def getDuplicateCode(self):
+        """
+        Get the information on duplicate code.
+
+        Returns
+        -------
+        set(int, int, list, int)
+            Number of duplicate code, maximum number of duplicate code, list of files with duplicate code, number of lines of duplicate code.
+        """
         duplicate_code = 'R0801'
         duplicate_code2 = 'RP0801'
         msg_ids = [duplicate_code, duplicate_code2]
