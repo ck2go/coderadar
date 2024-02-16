@@ -42,7 +42,7 @@ class CodeRadar(object):
 
 def main():
     """
-    Main function to run CodeRadar.
+    Main function to run CodeRadar from commandline.
     """
     if len(sys.argv) < 2:
         print("Please provide a package name as a command line argument.")
