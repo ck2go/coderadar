@@ -7,9 +7,21 @@ from collections import Counter
 
 from ._functions import executeShell
 
-    
+
 def _runPylintPy2(package_name):
-    cmd = ['pylint', 
+    """
+    Run PyLint for Python 2. Creates pylint.txt and pylint.json report files.
+
+    Parameters
+    ----------
+    package_name: str
+        Name of the package to run PyLint on.
+
+    Returns
+    -------
+    None
+    """
+    cmd = ['pylint',
            '-ry',
            '--load-plugins=pylint.extensions.mccabe',
            '--output-format=text',
@@ -53,7 +65,19 @@ def _runPylintPy2(package_name):
     
     
 def _runPylintPy3(package_name):
-    cmd = ['pylint', 
+    """
+    Run PyLint for Python 3. Creates pylint.txt and pylint.json report files.
+
+    Parameters
+    ----------
+    package_name: str
+        Name of the package to run PyLint on.
+
+    Returns
+    -------
+    None
+    """
+    cmd = ['pylint',
            '-ry',
            '--load-plugins=pylint.extensions.mccabe',
            '--output-format=json:pylint.json,text:pylint.txt',
@@ -61,17 +85,32 @@ def _runPylintPy3(package_name):
            './%s/' % package_name
            ]
     executeShell(cmd)
-    
-    
+
+
 def runPylint(package_name):
+    """
+    Run PyLint for the given package.
+
+    Parameters
+    ----------
+    package_name: str
+        Name of the package to run PyLint on.
+
+    Returns
+    -------
+    None
+    """
     print('Running PyLint...')
     if sys.version_info.major == 2:
         _runPylintPy2(package_name)
     else:
         _runPylintPy3(package_name)
-    
-    
+
+
 class PylintReport(object):
+    """
+    Class to analyze and report on the PyLint report that is loaded from file.
+    """
     def __init__(self, txt=None, json=None):
         if txt is None:
             txt = 'pylint.txt'
@@ -82,12 +121,26 @@ class PylintReport(object):
         self._json = json
         self._report = self._loadJsonReport()
         
-        
     def getTxtUrl(self):
+        """
+        Get the URL of the text report.
+
+        Returns
+        -------
+        str
+            URL of the text report.
+        """
         return self._txt
     
-    
     def _loadJsonReport(self):
+        """
+        Load the PyLint JSON report from file.
+
+        Returns
+        -------
+        dict
+            JSON report.
+        """
         try:
             res = load(open(self._json))
         except json.decoder.JSONDecodeError:
@@ -97,8 +150,15 @@ class PylintReport(object):
                 raise RuntimeError("Can't decode JSON in file '%s'!" % self._json)
         return res
         
-        
     def getScore(self):
+        """
+        Get the PyLint score.
+
+        Returns
+        -------
+        str
+            PyLint score.
+        """
         with open(self._txt) as f:
             lines = f.readlines()
         
@@ -107,8 +167,15 @@ class PylintReport(object):
                 score = line[line.find(' at ')+3:line.find('/')]
         return score
     
-    
     def getMissingDocstrings(self):
+        """
+        Get the number of missing docstrings.
+
+        Returns
+        -------
+        int
+            Number of missing docstrings.
+        """
         if sys.version_info.major == 2:
             no_docstring = 'C0111'
             msg_ids = [no_docstring]
@@ -122,8 +189,15 @@ class PylintReport(object):
         num_missing_docstrings = len(no_docstrings)
         return num_missing_docstrings
     
-    
     def getTooComplex(self):
+        """
+        Get the information on too complex code.
+
+        Returns
+        -------
+        set(int, int, str, str, str)
+            Number of too complex code, maximum complexity, file with too complex code, object with too complex code, line with too complex code.
+        """
         too_complex = 'R1260'
         msg_ids = [too_complex]
         
@@ -145,7 +219,6 @@ class PylintReport(object):
             too_complex_line = ''
             
         return num_too_complex, max_too_complex, too_complex_file, too_complex_obj, too_complex_line
-    
     
     def getTooManyStatements(self):
         too_many_satements = 'R0915'
@@ -169,7 +242,6 @@ class PylintReport(object):
             too_many_statements_line = ''
             
         return num_too_many_satements, max_too_many_satements, too_many_statements_file, too_many_statements_obj, too_many_statements_line
-    
     
     def getUnusedImports(self):
         unused_import = 'W0611'
@@ -207,7 +279,6 @@ class PylintReport(object):
         
         return num_unused_import, unused_import_file, unused_import_num, unused_import_items
     
-    
     def getUnusedVariables(self):
         unused_variable = 'W0612'
         msg_ids = [unused_variable]
@@ -235,7 +306,6 @@ class PylintReport(object):
             unused_variables_items = []
         
         return num_unused_variables, unused_variables_file, unused_variables_num, unused_variables_items
-    
     
     def getUnusedArguments(self):
         unused_arguments = 'W0613'
@@ -265,7 +335,6 @@ class PylintReport(object):
             
         return num_unused_arguments, unused_arguments_file, unused_arguments_num, unused_arguments_items
 
-    
     def getUnreachableCode(self):
         unreachable_code = 'W0101'
         msg_ids = [unreachable_code]
@@ -291,7 +360,6 @@ class PylintReport(object):
         
         return num_unreachable_code, unreachable_code_file, unreachable_code_num, unreachable_code_items
 
-    
     def getDuplicateCode(self):
         duplicate_code = 'R0801'
         duplicate_code2 = 'RP0801'
@@ -315,4 +383,3 @@ class PylintReport(object):
             duplicate_code_lines = 0
             
         return num_duplicate_code, duplicate_code_max, duplicate_code_files, duplicate_code_lines
-    
