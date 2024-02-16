@@ -18,7 +18,7 @@ class TestMain():
     
     def test_main(self, mocker):
         test_package = 'package_name'
-        
+        mocker.patch('coderadar.__main__.sys.argv', ['__main__.py', test_package])
         mock_relpath = mocker.patch('coderadar.__main__.os.path.relpath')
         mock_relpath.return_value = test_package
         

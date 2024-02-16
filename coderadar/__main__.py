@@ -14,21 +14,40 @@ from .pytest import runPytest
   
 
 class CodeRadar(object):
+    """
+    Class to analyze and report on the quality of code in a given package.
+    """
     def __init__(self, package_name):
+        """
+        Initialize CodeRadar with the package name.
+        """
         self._package_name = package_name
 
     
     def analyze(self):
+        """
+        Initialize CodeRadar with the package name.
+        """
         runPytest(self._package_name)
         runPylint(self._package_name)
         
     def report(self):
+        """
+        Summarize the code quality of the package.
+        """
         myReport = Report()
         myReport.summarizeCodeQuality(self._package_name)
         
     
 
 def main():
+    """
+    Main function to run CodeRadar.
+    """
+    if len(sys.argv) < 2:
+        print("Please provide a package name as a command line argument.")
+        sys.exit(1)
+
     package_name = os.path.relpath(sys.argv[1])
     cr = CodeRadar(package_name)
     cr.analyze()
