@@ -1,8 +1,7 @@
 '''Module containing PyLint functionality.'''
-import json.decoder
+import json
 import os.path
 import sys
-from json import load
 from collections import Counter
 
 from ._functions import executeShell
@@ -127,7 +126,8 @@ class PylintReport(object):
         if sys.version_info.major == 2:
             self._txt3 = self._txt.split('.')[0] + '_py3.txt'
             self._json3 = self._json.split('.')[0] + '_py3.json'
-            self._report3 = self._loadJsonReport(self._json3)
+            if os.path.exists(self._json3):
+                self._report3 = self._loadJsonReport(self._json3)
         
     def getTxtUrl(self):
         """
@@ -149,9 +149,16 @@ class PylintReport(object):
         dict
             JSON report.
         """
+        # For Python 3.x compatibility where JSONDecodeError is defined
+        if sys.version_info.major == 2:
+            # For Python 2.7, where JSONDecodeError does not exist
+            JSONDecodeError = ValueError
+        else:
+            JSONDecodeError = json.decoder.JSONDecodeError
+
         try:
-            res = load(open(jsonfile))
-        except json.decoder.JSONDecodeError:
+            res = json.load(open(jsonfile))
+        except JSONDecodeError:
             if os.path.getsize(jsonfile) == 0:
                 raise RuntimeError("File '%s' is empty!" % self._json)
             else:
