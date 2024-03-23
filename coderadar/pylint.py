@@ -21,6 +21,9 @@ def _runPylintPy2(package_name):
     -------
     None
     """
+    # unfortunately, pylint does not support json and text output at the same
+    # time in Python 2, so we have to run each test twice
+    # 2 for normal tests, 2 for Python 3 compatibility (--py3k) tests
     cmd = ['pylint',
            '-ry',
            '--load-plugins=pylint.extensions.mccabe',
@@ -30,8 +33,8 @@ def _runPylintPy2(package_name):
            './%s/' % package_name
            ]
     executeShell(cmd, print_output=True, save_output_as='pylint.txt')
-    
-    cmd = ['pylint', 
+
+    cmd = ['pylint',
            '-ry',
            '--load-plugins=pylint.extensions.mccabe',
            '--output-format=json',
@@ -54,7 +57,7 @@ def _runPylintPy2(package_name):
 
     cmd = ['pylint',
            '-ry',
-           '--py3k'
+           '--py3k',
            '--load-plugins=pylint.extensions.mccabe',
            '--output-format=json',
            '--ignore=tests',
@@ -119,7 +122,12 @@ class PylintReport(object):
             
         self._txt = txt
         self._json = json
-        self._report = self._loadJsonReport()
+        self._report = self._loadJsonReport(self._json)
+
+        if sys.version_info.major == 2:
+            self._txt3 = self._txt.split('.')[0] + '_py3.txt'
+            self._json3 = self._json.split('.')[0] + '_py3.json'
+            self._report3 = self._loadJsonReport(self._json3)
         
     def getTxtUrl(self):
         """
@@ -132,7 +140,7 @@ class PylintReport(object):
         """
         return self._txt
     
-    def _loadJsonReport(self):
+    def _loadJsonReport(self, jsonfile):
         """
         Load the PyLint JSON report from file.
 
@@ -142,9 +150,9 @@ class PylintReport(object):
             JSON report.
         """
         try:
-            res = load(open(self._json))
+            res = load(open(jsonfile))
         except json.decoder.JSONDecodeError:
-            if os.path.getsize(self._json) == 0:
+            if os.path.getsize(jsonfile) == 0:
                 raise RuntimeError("File '%s' is empty!" % self._json)
             else:
                 raise RuntimeError("Can't decode JSON in file '%s'!" % self._json)
@@ -431,3 +439,12 @@ class PylintReport(object):
             duplicate_code_lines = 0
             
         return num_duplicate_code, duplicate_code_max, duplicate_code_files, duplicate_code_lines
+
+
+    def getNumPy23Incompatibible(self):
+        if sys.version_info.major == 2:
+            num_py23_incompatible = len(self._report3)
+        else:
+            num_py23_incompatible = 0
+
+        return num_py23_incompatible

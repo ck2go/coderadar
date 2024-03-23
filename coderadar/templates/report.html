@@ -18,6 +18,8 @@
 <h2>Pytest <span style='font-weight: normal; font-size: medium;'>(<a href='<pytest_report_url>'>Report</a>)</span></h2>
 <table>
 <tr><td>Test coverage:</td><td><coverage><coverage_diff></td></tr>
+<tr><td>Number of tests:</td><td><num_tests><num_tests_diff></td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;errors:</td><td><num_errors><num_errors_diff></td></tr>
 </table>
 
 <hr>
@@ -45,6 +47,10 @@
   <div class='details'><em class='code'><unused_arguments_file></em><br/><unused_arguments_num> arguments(s): <em style='code'><unused_arguments_items></em></div></td></tr>
 <tr><td style='padding: 0 10px;'>Unreachable code:</td><td><unreachable_code><unreachable_code_diff><br/>
   <div class='details'><em class='code'><unreachable_code_file></em><br/><unreachable_code_num> block(s): <em style='code'><unreachable_code_items></em></div></td></tr>
+
+<tr><td span=2>&nbsp;</td></tr>
+<tr><td span=2><b>Python 2/3 compatibility:</b></td></tr>
+<tr><td style='padding: 0 10px;'>Python 2/3 incompatible:</td><td><num_py23_incompatible><num_py23_incompatible_diff><br/>
 </table>
 <hr>
 <span style='float:right;' class='logo'>generated with <a href='https://gitlab.com/ck2go/coderadar' class='logo'>CodeRadar</a></span>

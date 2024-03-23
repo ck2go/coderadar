@@ -1,4 +1,5 @@
 '''Reporting Module.'''
+import os
 import os.path
 
 from .pylint import PylintReport
@@ -111,7 +112,14 @@ class Report(object):
         str
             The report template.
         """
-        with open('templates/report.%s' % report_type) as f:
+        # get the abolute path of this script
+        script_abs_path = os.path.abspath(__file__)
+        # get the directory of this script
+        script_dir = os.path.dirname(script_abs_path)
+        # get the path of the template
+        template_path = os.path.join(script_dir, 'templates/report.%s' % report_type)
+
+        with open(template_path) as f:
             template = f.read()
         return template
 
@@ -200,6 +208,8 @@ class Report(object):
         report = report.replace('<pytest_report_url>', str(coverage.getTxtUrl()))
 
         report = self._replacePlacehlder(report, 'coverage', coverage, 'getTotalCoverage', previous_coverage, better=+1)
+        report = self._replacePlacehlder(report, 'num_tests', coverage, 'getNumberOfTests', previous_coverage, arg=0, better=+1)
+        report = self._replacePlacehlder(report, 'num_errors', coverage, 'getNumberOfTests', previous_coverage, arg=1, better=-1)
 
         report = self._replacePlacehlder(report, 'pylint_score', pylint, 'getScore', previous_pylint, better=+1)
 
@@ -243,6 +253,10 @@ class Report(object):
         report = report.replace('<unreachable_code_file>', str(pylint.getUnreachableCode()[1]))
         report = report.replace('<unreachable_code_num>', str(pylint.getUnreachableCode()[2]))
         report = report.replace('<unreachable_code_items>', ', '.join(pylint.getUnreachableCode()[3]))
+
+        report = self._replacePlacehlder(report, 'num_py23_incompatible', pylint, 'getNumPy23Incompatibible', previous_pylint, better=-1)
+
+
         return report
 
     def summarizeCodeQuality(self, package_name):

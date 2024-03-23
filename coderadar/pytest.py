@@ -22,6 +22,9 @@ def runPytest(package_name):
         test_dir = 'tests'
     elif os.path.exists('%s/tests' % package_name):
         test_dir = '%s/tests' % package_name
+    else:
+        print("WARNING: not tests found. Omitting pytest run.")
+        return
     
     coveragerc_path = '%s/.coveragerc' % test_dir
     if os.path.exists(coveragerc_path):
@@ -49,6 +52,9 @@ class CoverageReport(object):
     
     
     def getTotalCoverage(self):
+        if not os.path.exists(self._xml):
+            print "WARNING: Coverage XML file not found!"
+            return -1
         with open(self._txt) as f:
             lines = f.readlines()
 
@@ -66,3 +72,25 @@ class CoverageReport(object):
         if 'coverage' not in locals():
             raise RuntimeError("File '%s' does not contain Pytest coverage report!" % self._txt)
         return coverage
+
+    def getNumberOfTests(self):
+        if not os.path.exists(self._xml):
+            print "WARNING: Coverage XML file not found!"
+            return -1, -1
+        with open(self._txt) as f:
+            lines = f.readlines()
+
+        if len(lines) == 0:
+            raise RuntimeError("File '%s' is empty!" % self._txt)
+        for line in lines:
+            if 'collecting' == line[:10]:
+                num_tests = int(line.split()[3])
+                if 'error' in line:
+                    num_errors = int(line.split()[6])
+                else:
+                    num_errors = 0
+                break
+        if 'num_tests' not in locals():
+            raise RuntimeError("File '%s' does not contain Pytest report!" % self._txt)
+
+        return num_tests, num_errors

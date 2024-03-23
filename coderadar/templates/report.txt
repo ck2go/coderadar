@@ -2,6 +2,8 @@ Code Quality Report
 <package_name>
 --------------------------------------------------
 Pytest:
+  Number of tests: <num_tests><num_tests_diff>
+           errors: <num_errors><num_errors_diff>
   Test coverage: <coverage><coverage_diff>
 
 --------------------------------------------------
@@ -30,4 +32,7 @@ Pylint Score:  <pylint_score>/10<pylint_score_diff>
     Unreachable code:           <unreachable_code><unreachable_code_diff>
                                   <unreachable_code_file>
                                   <unreachable_code_num> block(s): <unreachable_code_items>
+
+  Python 2/3 compatibility:
+    Python 2/3 incompatible:    <num_py23_incompatible><num_py23_incompatible_diff>
 --------------------------------------------------
