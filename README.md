@@ -32,7 +32,12 @@ The following artifacts will be created:
 - ``pylint.txt``
 - ``code_quality_report.html``
 - ``code_quality_report.txt``
+- 
+If you run `coderadar` under Python 2.7, the following artifacts will be created additionally, in order to assess Python 3 compatibility:
+- ``pylint_py3.json`` 
+- ``pylint_py3.txt``
 
+If you place these artifacts in a folder called `last_run`, located in the directory where you run the command, the results of the last run are automatically compared to the current run.
 
 ## License
 [GNU GPLv3 License](https://choosealicense.com/licenses/gpl-3.0/)
