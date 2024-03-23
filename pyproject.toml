@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "coderadar"
-version = "0.5.4"
+version = "0.5.5"
 description = "Identifying the highest threats to your code quality by analyzing code metrics of your project using pytest and pylint."
 readme = "README.md"
 authors = [{ name = "Carsten König" }]
