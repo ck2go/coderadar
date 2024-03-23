@@ -449,9 +449,9 @@ class PylintReport(object):
 
 
     def getNumPy23Incompatibible(self):
+        num_py23_incompatible = 0
         if sys.version_info.major == 2:
-            num_py23_incompatible = len(self._report3)
-        else:
-            num_py23_incompatible = 0
+            if hasattr(self, '_report3'):
+                num_py23_incompatible = len(self._report3)
 
         return num_py23_incompatible
