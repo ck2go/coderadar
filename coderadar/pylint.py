@@ -455,3 +455,24 @@ class PylintReport(object):
                 num_py23_incompatible = len(self._report3)
 
         return num_py23_incompatible
+
+    def getPy23IncompatibibleItems(self):
+        py23_incompatible_items = [''] * 10
+        if sys.version_info.major == 2:
+            if hasattr(self, '_report3'):
+                if len(self._report3) > 0:
+                    py23_incompatible_items = ['%s' % item['message']
+                                               for item in self._report3[:min([10, len(self._report3)])]]
+
+        return tuple(py23_incompatible_items)
+
+    def getPy23IncompatibibleItemLocs(self):
+        py23_incompatible_item_locs = [''] * 10
+        if sys.version_info.major == 2:
+            if hasattr(self, '_report3'):
+                if len(self._report3) > 0:
+                    py23_incompatible_item_locs = ['%s, line %i' % (item['path'][item['path'].find('/')+1:],
+                                                                    item['line'])
+                                                   for item in self._report3[:min([10, len(self._report3)])]]
+
+        return tuple(py23_incompatible_item_locs)

@@ -255,6 +255,26 @@ class Report(object):
         report = report.replace('<unreachable_code_items>', ', '.join(pylint.getUnreachableCode()[3]))
 
         report = self._replacePlacehlder(report, 'num_py23_incompatible', pylint, 'getNumPy23Incompatibible', previous_pylint, better=-1)
+        report = report.replace('<py23_incompatible_item1>', str(pylint.getPy23IncompatibibleItems()[0]))
+        report = report.replace('<py23_incompatible_item2>', str(pylint.getPy23IncompatibibleItems()[1]))
+        report = report.replace('<py23_incompatible_item3>', str(pylint.getPy23IncompatibibleItems()[2]))
+        report = report.replace('<py23_incompatible_item4>', str(pylint.getPy23IncompatibibleItems()[3]))
+        report = report.replace('<py23_incompatible_item5>', str(pylint.getPy23IncompatibibleItems()[4]))
+        report = report.replace('<py23_incompatible_item6>', str(pylint.getPy23IncompatibibleItems()[5]))
+        report = report.replace('<py23_incompatible_item7>', str(pylint.getPy23IncompatibibleItems()[6]))
+        report = report.replace('<py23_incompatible_item8>', str(pylint.getPy23IncompatibibleItems()[7]))
+        report = report.replace('<py23_incompatible_item9>', str(pylint.getPy23IncompatibibleItems()[8]))
+        report = report.replace('<py23_incompatible_item10>', str(pylint.getPy23IncompatibibleItems()[9]))
+        report = report.replace('<py23_incompatible_item1_loc>', str(pylint.getPy23IncompatibibleItemLocs()[0]))
+        report = report.replace('<py23_incompatible_item2_loc>', str(pylint.getPy23IncompatibibleItemLocs()[1]))
+        report = report.replace('<py23_incompatible_item3_loc>', str(pylint.getPy23IncompatibibleItemLocs()[2]))
+        report = report.replace('<py23_incompatible_item4_loc>', str(pylint.getPy23IncompatibibleItemLocs()[3]))
+        report = report.replace('<py23_incompatible_item5_loc>', str(pylint.getPy23IncompatibibleItemLocs()[4]))
+        report = report.replace('<py23_incompatible_item6_loc>', str(pylint.getPy23IncompatibibleItemLocs()[5]))
+        report = report.replace('<py23_incompatible_item7_loc>', str(pylint.getPy23IncompatibibleItemLocs()[6]))
+        report = report.replace('<py23_incompatible_item8_loc>', str(pylint.getPy23IncompatibibleItemLocs()[7]))
+        report = report.replace('<py23_incompatible_item9_loc>', str(pylint.getPy23IncompatibibleItemLocs()[8]))
+        report = report.replace('<py23_incompatible_item10_loc>', str(pylint.getPy23IncompatibibleItemLocs()[9]))
 
 
         return report
