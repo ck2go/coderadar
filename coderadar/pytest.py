@@ -53,7 +53,7 @@ class CoverageReport(object):
     
     def getTotalCoverage(self):
         if not os.path.exists(self._xml):
-            print "WARNING: Coverage XML file not found!"
+            print("WARNING: Coverage XML file not found!")
             return -1
         with open(self._txt) as f:
             lines = f.readlines()
@@ -75,7 +75,7 @@ class CoverageReport(object):
 
     def getNumberOfTests(self):
         if not os.path.exists(self._xml):
-            print "WARNING: Coverage XML file not found!"
+            print("WARNING: Coverage XML file not found!")
             return -1, -1
         with open(self._txt) as f:
             lines = f.readlines()
