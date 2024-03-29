@@ -123,12 +123,19 @@ class PylintReport(object):
         self._json = json
         self._report = self._loadJsonReport(self._json)
 
+        self._txt3 = None
+        self._json3 = None
+        self._report3 = None
+
         if sys.version_info.major == 2:
             self._txt3 = self._txt.split('.')[0] + '_py3.txt'
             self._json3 = self._json.split('.')[0] + '_py3.json'
             if os.path.exists(self._json3):
                 self._report3 = self._loadJsonReport(self._json3)
-        
+
+    def hasPython23Report(self):
+        return self._report3 is not None
+
     def getTxtUrl(self):
         """
         Get the URL of the text report.
@@ -451,28 +458,34 @@ class PylintReport(object):
     def getNumPy23Incompatibible(self):
         num_py23_incompatible = 0
         if sys.version_info.major == 2:
-            if hasattr(self, '_report3'):
+            if self._report3 is not None:
                 num_py23_incompatible = len(self._report3)
+            else:
+                num_py23_incompatible = None
 
         return num_py23_incompatible
 
     def getPy23IncompatibibleItems(self):
         py23_incompatible_items = [''] * 10
         if sys.version_info.major == 2:
-            if hasattr(self, '_report3'):
+            if self._report3 is not None:
                 if len(self._report3) > 0:
                     py23_incompatible_items = ['%s' % item['message']
                                                for item in self._report3[:min([10, len(self._report3)])]]
+            else:
+                py23_incompatible_items = ['No Python 2/3 incompatibilities found.']
 
         return tuple(py23_incompatible_items)
 
     def getPy23IncompatibibleItemLocs(self):
         py23_incompatible_item_locs = [''] * 10
         if sys.version_info.major == 2:
-            if hasattr(self, '_report3'):
+            if self._report3 is not None:
                 if len(self._report3) > 0:
                     py23_incompatible_item_locs = ['%s, line %i' % (item['path'][item['path'].find('/')+1:],
                                                                     item['line'])
                                                    for item in self._report3[:min([10, len(self._report3)])]]
+            else:
+                py23_incompatible_item_locs = ['']
 
         return tuple(py23_incompatible_item_locs)

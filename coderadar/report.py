@@ -53,6 +53,8 @@ class Report(object):
         str
             The difference in text format.
         """
+        if old is None:
+            return ''
         if type(old) is str:
             postfix = '%' if old[-1] == '%' else ''
         else:
@@ -83,6 +85,8 @@ class Report(object):
         str
             The difference in HTML format.
         """
+        if old is None:
+            return ''
         if type(old) is str:
             postfix = '%' if old[-1] == '%' else ''
         else:
@@ -98,7 +102,7 @@ class Report(object):
             html = ' (<span style="color:%s">%+.2f%s</span>)' % (color, new - old, postfix)
         return html
       
-    def getReportTemplate(self, report_type='txt'):
+    def getReportTemplate(self, report_type='txt', coverage=None, pylint=None):
         """
         Get the report template.
 
@@ -106,6 +110,10 @@ class Report(object):
         ----------
         report_type: str
             The report type ('txt' or 'html').
+        coverage: CoverageReport
+            The coverage report.
+        pylint: PylintReport
+            The Pylint report.
 
         Returns
         -------
@@ -118,9 +126,17 @@ class Report(object):
         script_dir = os.path.dirname(script_abs_path)
         # get the path of the template
         template_path = os.path.join(script_dir, 'templates/report.%s' % report_type)
-
         with open(template_path) as f:
             template = f.read()
+
+        if pylint.hasPython23Report():
+            template_path = os.path.join(script_dir, 'templates/report_py23.%s' % report_type)
+            with open(template_path) as f:
+                py23_template = f.read()
+        else:
+            py23_template = ''
+        template = template.replace('###TEMPLATE_PY23###', py23_template)
+
         return template
 
     def _replacePlacehlder(self, report, placeholder, actual_results, method_name, previous_results=None, arg=None, better=None):
@@ -299,7 +315,8 @@ class Report(object):
         previous_pylint = self._getPreviousPylint()
 
         for report_type in ['txt', 'html']:
-            report = self.getReportTemplate(report_type=report_type)
+            report = self.getReportTemplate(report_type=report_type, coverage=coverage, pylint=pylint)
+
             report = self._fillTemplate(report, package_name, coverage, pylint, previous_coverage, previous_pylint)
             if report_type == 'txt':
                 print(report)
