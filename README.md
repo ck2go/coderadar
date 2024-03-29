@@ -88,7 +88,7 @@ If you place these artifacts in a folder called `last_run`, located in the direc
 
 ## How to contribute
 
-No, CodeRadar itself, although developed in a (partially) test-driven manner, is also not a perfect piece of code. Feel free to suggest new features, report bugs or even contribute code. I would be happy to see this project grow and improve with your help. 
+No, CodeRadar itself, although developed in a (partially) test-driven manner, and being all about code quality, is also not a perfect piece of code (ironic, isn't it?). Feel free to suggest new features, report bugs or even contribute code. I would be happy to see this project grow and improve with your help. 
 
 ## License
 [GNU GPLv3 License](https://choosealicense.com/licenses/gpl-3.0/)
