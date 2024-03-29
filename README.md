@@ -54,9 +54,8 @@ Pylint Score:   4.20/10 (+0.36)
 --------------------------------------------------
 ```
 
-And here is the same code quality report in HTML format:
-
-![Code Quality Report](https://www.gitlab.com/ck2go/coderadar/-/raw/master/docs/code_quality_report.png "Code Quality Report")
+And here is an image of the same code quality report in HTML format:
+![CodeRadar HTML code quality report](https://gitlab.com/ck2go/coderadar/-/raw/main/docs/code_quality_report_html.png)
 
 ## Installation
 
