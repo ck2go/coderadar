@@ -79,12 +79,12 @@ class CoverageReport(object):
             return -1, -1
         with open(self._txt) as f:
             lines = f.readlines()
-
         if len(lines) == 0:
             raise RuntimeError("File '%s' is empty!" % self._txt)
-        for line in lines:
-            if 'collecting' == line[:10]:
-                num_tests = int(line.split()[3])
+        for i, line in enumerate(lines):
+            if 'collected ' in line and ' items' in line:
+                num_tests = int(line[line.find('collected ') + len('collected '):line.find(' items')])
+                # num_tests = int(line.split()[3])
                 if 'error' in line:
                     num_errors = int(line.split()[6])
                 else:
